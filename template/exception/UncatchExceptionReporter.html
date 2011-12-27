@@ -1,0 +1,80 @@
+<lib name="jquery.beautyofcode" />
+
+<h2>系统遇到无法处理的异常</h2>
+	
+<do "$aException=$aException->getPrevious()" idx='exceptionIdx'>
+
+	<h4>异常类：{=get_class($aException)}</h4>
+	
+	<div>
+		Code：{=$aException->getCode()}
+		消息：
+		<if "$aException instanceof \org\jecat\framework\lang\Exception">
+			{=$aException->message()}
+		<else />
+			{=$aException->getMessage()}
+		</if>
+	</div>
+	
+	<a href="javascript:jquery('#calltrace-{=$exceptionIdx}').toggle()">调用堆栈</a>
+	<div style='display:none' id='calltrace-{=$exceptionIdx}'>
+		
+		{? $arrTrace=array_reverse($aException->getTrace()); }
+		{? $arrTrace=array_reverse($arrTrace,true); }
+		<foreach for="$arrTrace" item='arrCall' key='callIdx'>
+		<div style="margin-top:6px;margin-left:20px;">
+		
+			<div>
+				#{=$callIdx} {=str_replace('\\','\\',@$arrCall['class'])}{=@$arrCall['type']}{=$arrCall['function']}
+				(
+					<foreach for="$arrCall['args']" item='argv' idx='idx'>
+					
+					<if $idx>,</if>
+					
+					<if "is_object($argv)">
+						<a>object</a>
+					<else /> 
+						<a>{= \org\jecat\framework\lang\Type::reflectType($argv)}</a>
+					</if>
+					</foreach>
+				)
+			</div>
+			<div style="color:#999999">
+				{=$arrCall['file']} (line {=$arrCall['line']})
+				[<a href="javascript:jquery('#source-{=$exceptionIdx}-{=$callIdx}').toggle()">source</a>]
+				
+				<div style="display:none" id='source-{=$exceptionIdx}-{=$callIdx}'>
+				<pre class='code'>
+					<code class='php'>
+// ... ...
+<foreach for="$theController->readSourceSegment($arrCall['file'],$arrCall['line'])" item='sLine'>{=$sLine}</foreach>
+// ... ...
+					</code>
+				</pre>
+				</div>
+			</div>
+			
+		</div>
+		</foreach>
+		
+	</div>
+	
+	<hr />
+
+</do>
+
+<script>
+jquery(function(){
+	jquery.beautyOfCode.init('clipboard.swf',{
+		brushes: ['Xml', 'JScript', 'CSharp', 'Plain', 'Php' ,'Sql'],
+		baseUrl: './',
+        firstLine: 20 ,
+		ready: function() {
+			jquery.beautyOfCode.beautifyAll();
+		}
+	});
+	
+	//
+});
+
+</script>
