@@ -1,4 +1,4 @@
-<lib name="jquery.beautyofcode" />
+<lib name="syntaxhighlighter" />
 
 <h2>系统遇到无法处理的异常</h2>
 	
@@ -44,12 +44,10 @@
 				[<a href="javascript:jquery('#source-{=$exceptionIdx}-{=$callIdx}').toggle()">source</a>]
 				
 				<div style="display:none" id='source-{=$exceptionIdx}-{=$callIdx}'>
-				<pre class='code'>
-					<code class='php'>
+				<pre class='brush: php; first-line: {=$arrCall["line"]-5} ; highlight: {=$arrCall["line"]}'>
 // ... ...
 <foreach for="$theController->readSourceSegment($arrCall['file'],$arrCall['line'])" item='sLine'>{=$sLine}</foreach>
 // ... ...
-					</code>
 				</pre>
 				</div>
 			</div>
@@ -62,19 +60,3 @@
 	<hr />
 
 </do>
-
-<script>
-jquery(function(){
-	jquery.beautyOfCode.init('clipboard.swf',{
-		brushes: ['Xml', 'JScript', 'CSharp', 'Plain', 'Php' ,'Sql'],
-		baseUrl: './',
-        firstLine: 20 ,
-		ready: function() {
-			jquery.beautyOfCode.beautifyAll();
-		}
-	});
-	
-	//
-});
-
-</script>

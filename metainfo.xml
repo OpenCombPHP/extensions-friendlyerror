@@ -10,6 +10,4 @@
  
 	<template folder="/template" />
 	
-	<publicFolder folder="/public" />
-	
 </Extension>
