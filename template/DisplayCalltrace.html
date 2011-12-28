@@ -1,0 +1,43 @@
+<div style='display:none' id='{=$sCallTraceId}'>
+	
+	{? $arrCallTrace=array_reverse($arrCallTrace); }
+	{? $arrCallTrace=array_reverse($arrCallTrace,true); }
+	<foreach for="$arrCallTrace" item='arrCall' key='callIdx'>
+	<div style="margin-top:3px;margin-left:30px;">
+	
+		<div>
+			#{=$callIdx} {=str_replace('\\','\\',@$arrCall['class'])}{=@$arrCall['type']}{=$arrCall['function']}
+			(
+				<foreach for="@$arrCall['args']" item='argv' idx='idx'>
+				
+				<if $idx>,</if>
+				
+				<if "is_object($argv)">
+					<a>object</a>
+				<else /> 
+					<a>{= \org\jecat\framework\lang\Type::reflectType($argv)}</a>
+				</if>
+				</foreach>
+			)
+		</div>
+		 
+		<if "!empty($arrCall['file'])">
+		<div style="color:#999999">
+			{=@$arrCall['file']} (line {=@$arrCall['line']})
+			[<a href="javascript:jquery('#source-{=$sCallTraceId}-{=$callIdx}').toggle()">source</a>]
+			
+			<div style="display:none;margin-left:30px;" id='source-{=$sCallTraceId}-{=$callIdx}'>
+				<pre class='code'>
+					<code class='php'>
+// ... ...
+<foreach for="\org\opencomb\friendlyerror\FriendlyError::readSourceSegment(@$arrCall['file'],@$arrCall['line'])" item='sLine'>{=$sLine}</foreach>
+// ... ...
+					</code>
+				</pre>
+			</div>
+		</div>
+		</if>			
+	</div>
+	</foreach>
+		
+</div>
