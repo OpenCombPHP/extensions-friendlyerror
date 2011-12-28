@@ -24,9 +24,6 @@ class FriendlyError extends Extension
 		
 		// 错误
 		set_error_handler( array(__CLASS__,'errorHandler'), E_ALL ) ;
-		
-		echo $xxxx ;
-		throw new \Exception('xx') ;
 	}
 	
 	static public function uncatchExceptionHandler(\Exception $aException)
