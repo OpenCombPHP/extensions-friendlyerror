@@ -1,6 +1,9 @@
 <?php 
 namespace org\opencomb\friendlyerror ;
 
+use org\jecat\framework\lang\Type;
+
+use org\jecat\framework\mvc\view\UIFactory;
 use org\opencomb\friendlyerror\exception\UncatchExceptionReporter;
 use org\opencomb\platform\ext\Extension ;
 
@@ -19,6 +22,10 @@ class FriendlyError extends Extension
 		// 未捕获异常
 		set_exception_handler( array(__CLASS__,'uncatchExceptionHandler') ) ;
 		
+		// 错误
+		set_error_handler( array(__CLASS__,'errorHandler'), E_ALL ) ;
+		
+		echo $xxxx ;
 		throw new \Exception('xx') ;
 	}
 	
@@ -27,32 +34,47 @@ class FriendlyError extends Extension
 		$aExceptionReporter = new UncatchExceptionReporter( array('exception'=>$aException) ) ;
 		$aExceptionReporter->mainRun() ;
 		return ;
-		
-		$sContents = "<pre>" ;
-	
-		do{
-			
-			$sContents.= "------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\r\n" ;
-			
-			$sContents.= "0无法处理的异常：".get_class($aException)."\r\n" ;
-				
-			if($aException instanceof \org\jecat\framework\lang\Exception)
-			{
-				$sContents.= $aException->message()."\r\n" ;
-			}
-			else
-			{
-				$sContents.= $aException->getMessage()."\r\n" ;
-			}
-			
-			$sContents.= 'Line '.$aException->getLine().' in file: '.$aException->getFile()."\r\n" ;
-			$sContents.= $aException->getTraceAsString()."\r\n" ;
-		
-		// 递归 cause
-		} while( $aException = $aException->getPrevious() ) ;
-		
-		$sContents.= "</pre>\r\n" ;
-		
-		echo $sContents ;
 	}
+	
+	static public function errorHandler($nErr,$sErrMsg,$sFile,$nLine,$context)
+ 	{
+ 		// skip @ operator
+ 		if (error_reporting() == 0)
+ 		{
+        	return ;
+    	}
+    	
+		$aUI = UIFactory::singleton()->create() ;
+		$aUI->display('friendlyerror:ErrorMessage.html',array(
+				'nErrorCode' => $nErr ,
+				'nErrorMessage' => $sErrMsg ,
+				'sFile' => $sFile ,
+				'nLine' => $nLine ,
+				'context' => $context ,
+				'nErrorIdx' => self::$nErrorIdx++ ,
+				'arrCalltrace' => debug_backtrace() ,
+		)) ;
+	}
+	
+	static public function readSourceSegment($sFile,$nLine,$nRange=5)
+	{
+		$arrLines = (array)@file($sFile) ;
+	
+		$nOffsetLine = $nLine-$nRange ;
+		if($nOffsetLine<0)
+		{
+			$nOffsetLine = 0 ;
+		}
+		$nLines = $nRange*2+1 ;
+		if( count($arrLines)<$nOffsetLine+$nLines )
+		{
+			$nLines = count($arrLines)-$nOffsetLine + 1 ;
+		}
+	
+		$arrLines = array_slice($arrLines,$nOffsetLine,$nLines) ;
+	
+		return $arrLines ;
+	}
+	
+	static private $nErrorIdx = 0 ;
 }
