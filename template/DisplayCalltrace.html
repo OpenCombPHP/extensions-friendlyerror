@@ -1,3 +1,4 @@
+<lib name='jquery'/>
 <lib name='syntaxhighlighter:php'/>
 
 <div style='display:none' id='{=$sCallTraceId}'>
@@ -39,4 +40,10 @@
 		</if>			
 	</div>
 	</foreach>
+	<script type="text/javascript">
+		//隐藏无用的工具栏
+		SyntaxHighlighter.defaults['toolbar'] = false;
+		//启动语法高亮
+        SyntaxHighlighter.all();
+    </script>
 </div>
