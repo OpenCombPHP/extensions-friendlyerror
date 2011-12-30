@@ -1,6 +1,6 @@
 <lib name='jquery'/>
 <lib name='syntaxhighlighter:php'/>
-
+    
 <div style='display:none' id='{=$sCallTraceId}'>
 	
 	{? $arrCallTrace=array_reverse($arrCallTrace); }
@@ -30,9 +30,9 @@
 			[<a href="javascript:jquery('#source-{=$sCallTraceId}-{=$callIdx}').toggle()">source</a>]
 			
 			<div style="display:none;margin-left:30px;" id='source-{=$sCallTraceId}-{=$callIdx}'>
-				<pre class="brush: php; first-line: {=$arrCall['line']-5}; highlight: [{=$arrCall['line']}]">
+				<pre class="brush: php; first-line: {=$arrCall['segmentOffset']}; highlight: [{=$arrCall['line']}]">
 // ... ...
-<foreach for="\org\opencomb\friendlyerror\FriendlyError::readSourceSegment(@$arrCall['file'],@$arrCall['line'])" item='sLine'>{=$sLine}</foreach>
+<foreach for="\org\opencomb\friendlyerror\FriendlyError::readSourceSegment(@$arrCall['file'],@$arrCall['segmentOffset'],@$arrCall['segmentLength'])" item='sLine'>{=$sLine}</foreach>
 // ... ...
 				</pre>
 			</div>
@@ -40,10 +40,4 @@
 		</if>			
 	</div>
 	</foreach>
-	<script type="text/javascript">
-		//隐藏无用的工具栏
-		SyntaxHighlighter.defaults['toolbar'] = false;
-		//启动语法高亮
-        SyntaxHighlighter.all();
-    </script>
 </div>

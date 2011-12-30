@@ -17,6 +17,7 @@ class UncatchExceptionReporter extends Controller
 	public function process()
 	{
 		$this->view->variables()->set('aException',$this->params['exception']) ;
+		$this->view->variables()->set('arrCalltrace',$this->params['calltrace']) ;
 	}
 }
 

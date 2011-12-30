@@ -7,7 +7,7 @@
  
 	<class>org.opencomb.friendlyerror.FriendlyError</class>
 	<package folder="/class" namespace="org.opencomb.friendlyerror" />
- 
+  
 	<template folder="/template" />
 	
 </Extension>
