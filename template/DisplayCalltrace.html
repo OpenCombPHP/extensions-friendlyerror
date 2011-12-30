@@ -1,14 +1,13 @@
 <lib name='jquery'/>
 <lib name='syntaxhighlighter:php'/>
     
-<div style='display:none' id='{=$sCallTraceId}'>
 	
 	<foreach for="$arrCallTrace" item='arrCall' key='callIdx'>
 	<div style="margin-left:30px;">
 	
 		<div>
 			#{=$callIdx}
-
+	
 			<if "!empty($arrCall['file'])">
 			[<a href="javascript:jquery('#source-{=$sCallTraceId}-{=$callIdx}').toggle()">source</a>]
 			</if>
@@ -30,14 +29,13 @@
 		 
 		<if "!empty($arrCall['file'])">
 		<div style="display:none;margin-left:30px;color:#999999" id='source-{=$sCallTraceId}-{=$callIdx}'>
-			{=@$arrCall['file']} (line {=@$arrCall['line']})
-			<pre class="brush: php; first-line: {=$arrCall['segmentOffset']}; highlight: [{=$arrCall['line']}]">
-// ... ...
-<foreach for="\org\opencomb\friendlyerror\FriendlyError::readSourceSegment(@$arrCall['file'],@$arrCall['segmentOffset'],@$arrCall['segmentLength'])" item='sLine'>{=$sLine}</foreach>
-// ... ...
-			</pre>
+				{=@$arrCall['file']} (line {=@$arrCall['line']})
+				<pre class="brush: php; first-line: {=$arrCall['segmentOffset']}; highlight: [{=$arrCall['line']}]">
+	// ... ...
+	<foreach for="\org\opencomb\friendlyerror\FriendlyError::readSourceSegment(@$arrCall['file'],@$arrCall['segmentOffset'],@$arrCall['segmentLength'])" item='sLine'>{=$sLine}</foreach>
+	// ... ...
+				</pre>
+			</div>
+			</if>			
 		</div>
-		</if>			
-	</div>
-	</foreach>
-</div>
+		</foreach>

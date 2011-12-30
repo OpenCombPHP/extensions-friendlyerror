@@ -3,7 +3,7 @@
 <h2>系统遇到无法处理的异常</h2>
 	
 <do "$aException=$aException->getPrevious()" idx='exceptionIdx'>
-<div style="font-size:11px">
+<div style="font-size:11px;margin-top:25px;margin-left:{=($exceptionIdx)*40}px">
 	<h4>异常类：{=get_class($aException)}</h4>
 	
 	<div>
@@ -16,9 +16,12 @@
 		</if>
 	</div>
 	
-	<a href="javascript:jquery('#exception-{=$exceptionIdx}-calltrace-').toggle()">调用堆栈</a>
-	<include file="friendlyerror:DisplayCalltrace.html" var.arrCallTrace="\org\opencomb\friendlyerror\FriendlyError::typeCalltrace($aException->getTrace())" var.sCallTraceId="'exception-'.$exceptionIdx.'-calltrace-'"  />
+	<a href="javascript:jquery('#exception-{=$exceptionIdx}-calltrace').toggle()">调用堆栈</a>
 
-	<hr />
+	<div id='exception-{=$exceptionIdx}-calltrace'>
+		<include file="friendlyerror:DisplayCalltrace.html" var.arrCallTrace="\org\opencomb\friendlyerror\FriendlyError::typeCalltrace($aException->getTrace())" var.sCallTraceId="'exception-'.$exceptionIdx.'-calltrace'"  />
+	</div>
+
 </div>
+<hr />
 </do>
