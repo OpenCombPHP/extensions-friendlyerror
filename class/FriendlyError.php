@@ -50,6 +50,7 @@ class FriendlyError extends Extension
 		$aUI = UIFactory::singleton()->create() ;
 		$aUI->display('friendlyerror:ErrorMessage.html',array(
     			'nErrorCode' => $nErr ,
+    			'sErrorType' => self::$arrErrorTypes[$nErr] ,
     			'nErrorMessage' => $sErrMsg ,
     			'sFile' => $sFile ,
     			'nLine' => $nLine ,
@@ -61,14 +62,20 @@ class FriendlyError extends Extension
 	
 	static public function typeCalltrace($arrCalltrace)
 	{
+		// 顺序
+		$arrCalltrace=array_reverse($arrCalltrace);
+		$arrCalltrace=array_reverse($arrCalltrace,true);
+		
 		foreach($arrCalltrace as &$arrCall)
 		{
+			// 处理 eval()
 	    	if( preg_match("/(.+)\\((\\d+)\\) : eval\\(\\)'d code$/", $arrCall['file'],$arrRes) )
 	    	{
 	    		$arrCall['file'] = $arrRes[1] ;
 	    		$arrCall['line'] = (int)$arrRes[2] ;
 	    	}
-	    		    	
+
+	    	// 代码片段范围
 	    	$arrCall['segmentOffset'] = $arrCall['line']-self::$nSegmentRange ;
 	    	if($arrCall['segmentOffset']<0)
 	    	{
@@ -97,6 +104,21 @@ class FriendlyError extends Extension
 	
 	static private $nErrorIdx = 0 ;
 	static private $nSegmentRange = 5 ;
+	static private $arrErrorTypes = array (
+			E_ERROR            => 'ERROR',
+			E_WARNING        => 'WARNING',
+			E_PARSE          => 'PARSING ERROR',
+			E_NOTICE         => 'NOTICE',
+			E_CORE_ERROR     => 'CORE ERROR',
+			E_CORE_WARNING   => 'CORE WARNING',
+			E_COMPILE_ERROR  => 'COMPILE ERROR',
+			E_COMPILE_WARNING => 'COMPILE WARNING',
+			E_USER_ERROR     => 'USER ERROR',
+			E_USER_WARNING   => 'USER WARNING',
+			E_USER_NOTICE    => 'USER NOTICE',
+			E_STRICT         => 'STRICT NOTICE',
+			E_RECOVERABLE_ERROR  => 'RECOVERABLE ERROR'
+	);
 }
 
 class __HighterActiver extends Object

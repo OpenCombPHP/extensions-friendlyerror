@@ -3,10 +3,8 @@
     
 <div style='display:none' id='{=$sCallTraceId}'>
 	
-	{? $arrCallTrace=array_reverse($arrCallTrace); }
-	{? $arrCallTrace=array_reverse($arrCallTrace,true); }
 	<foreach for="$arrCallTrace" item='arrCall' key='callIdx'>
-	<div style="margin-top:3px;margin-left:30px;">
+	<div style="margin-left:30px;">
 	
 		<div>
 			#{=$callIdx} {=str_replace('\\','\\',@$arrCall['class'])}{=@$arrCall['type']}{=$arrCall['function']}
@@ -22,20 +20,20 @@
 				</if>
 				</foreach>
 			)
+			
+			<if "!empty($arrCall['file'])">
+			[<a href="javascript:jquery('#source-{=$sCallTraceId}-{=$callIdx}').toggle()">source</a>]
+			</if>
 		</div>
 		 
 		<if "!empty($arrCall['file'])">
-		<div style="color:#999999">
+		<div style="display:none;margin-left:30px;color:#999999" id='source-{=$sCallTraceId}-{=$callIdx}'>
 			{=@$arrCall['file']} (line {=@$arrCall['line']})
-			[<a href="javascript:jquery('#source-{=$sCallTraceId}-{=$callIdx}').toggle()">source</a>]
-			
-			<div style="display:none;margin-left:30px;" id='source-{=$sCallTraceId}-{=$callIdx}'>
-				<pre class="brush: php; first-line: {=$arrCall['segmentOffset']}; highlight: [{=$arrCall['line']}]">
+			<pre class="brush: php; first-line: {=$arrCall['segmentOffset']}; highlight: [{=$arrCall['line']}]">
 // ... ...
 <foreach for="\org\opencomb\friendlyerror\FriendlyError::readSourceSegment(@$arrCall['file'],@$arrCall['segmentOffset'],@$arrCall['segmentLength'])" item='sLine'>{=$sLine}</foreach>
 // ... ...
-				</pre>
-			</div>
+			</pre>
 		</div>
 		</if>			
 	</div>

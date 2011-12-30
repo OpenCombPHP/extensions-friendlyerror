@@ -1,5 +1,5 @@
 <div style="font-size:11px;">
-	[#{=$nErrorCode}] {=$nErrorMessage}
+	{=$sErrorType} ({=$nErrorCode}): {=$nErrorMessage}
 	<a href="javascript:jquery('#error-{=$nErrorIdx}-calltrace-').toggle()">调用堆栈</a>
 	<include file="friendlyerror:DisplayCalltrace.html" var.arrCallTrace="$arrCalltrace" var.sCallTraceId="'error-'.$nErrorIdx.'-calltrace-'"  />
 </div>
