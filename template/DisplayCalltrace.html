@@ -7,7 +7,13 @@
 	<div style="margin-left:30px;">
 	
 		<div>
-			#{=$callIdx} {=str_replace('\\','\\',@$arrCall['class'])}{=@$arrCall['type']}{=$arrCall['function']}
+			#{=$callIdx}
+
+			<if "!empty($arrCall['file'])">
+			[<a href="javascript:jquery('#source-{=$sCallTraceId}-{=$callIdx}').toggle()">source</a>]
+			</if>
+			
+			{=str_replace('\\','\\',@$arrCall['class'])}{=@$arrCall['type']}{=$arrCall['function']}
 			(
 				<foreach for="@$arrCall['args']" item='argv' idx='idx'>
 				
@@ -20,10 +26,6 @@
 				</if>
 				</foreach>
 			)
-			
-			<if "!empty($arrCall['file'])">
-			[<a href="javascript:jquery('#source-{=$sCallTraceId}-{=$callIdx}').toggle()">source</a>]
-			</if>
 		</div>
 		 
 		<if "!empty($arrCall['file'])">
