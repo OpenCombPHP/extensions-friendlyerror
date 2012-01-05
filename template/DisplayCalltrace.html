@@ -32,7 +32,7 @@
 				{=@$arrCall['file']} (line {=@$arrCall['line']})
 				<pre class="brush: php; first-line: {=$arrCall['segmentOffset']}; highlight: [{=$arrCall['line']}]">
 	// ... ...
-	<foreach for="\org\opencomb\friendlyerror\FriendlyError::readSourceSegment(@$arrCall['file'],@$arrCall['segmentOffset'],@$arrCall['segmentLength'])" item='sLine'>{=$sLine}</foreach>
+	<foreach for="\org\opencomb\friendlyerror\ErrorReporter::readSourceSegment(@$arrCall['file'],@$arrCall['segmentOffset'],@$arrCall['segmentLength'])" item='sLine'>{=$sLine}</foreach>
 	// ... ...
 				</pre>
 			</div>

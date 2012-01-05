@@ -19,7 +19,7 @@
 	<a href="javascript:jquery('#exception-{=$exceptionIdx}-calltrace').toggle()">调用堆栈</a>
 
 	<div id='exception-{=$exceptionIdx}-calltrace'>
-		<include file="friendlyerror:DisplayCalltrace.html" var.arrCallTrace="\org\opencomb\friendlyerror\FriendlyError::typeCalltrace($aException->getTrace())" var.sCallTraceId="'exception-'.$exceptionIdx.'-calltrace'"  />
+		<include file="friendlyerror:DisplayCalltrace.html" var.arrCallTrace="\org\opencomb\friendlyerror\ErrorReporter::tidyCalltrace($aException->getTrace())" var.sCallTraceId="'exception-'.$exceptionIdx.'-calltrace'"  />
 	</div>
 
 </div>
