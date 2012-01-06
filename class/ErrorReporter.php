@@ -35,13 +35,13 @@ class ErrorReporter extends Object
 <<<OUTPUT
 <div style="font-size:11px;">
 	{$sErrType} ({$nErr}): {$sErrMsg} <a href="javascript:jquery('#error-{$nErrorIdx}-calltrace').toggle()">调用堆栈</a>
-	<div style="display:none" id='error-{$nErrorIdx}-calltrace'>
+	<div id='error-{$nErrorIdx}-calltrace'>
 OUTPUT
 		) ;
 		
 		$this->outputCalltrace($arrCalltrace,$aOutput) ;
 		
-		$aOutput->write("</div></div>") ;
+		$aOutput->write("</div><script>jquery('#error-{$nErrorIdx}-calltrace').hide()</script></div>") ;
 	}
 	
 	public function outputCalltrace($arrCalltrace,IOutputStream $aOutput=null)
@@ -104,7 +104,7 @@ OUTPUT
 	
 	static private $nErrorIdx = 0 ;
 	static private $nCalltraceIdx = 0 ;
-	static private $nSegmentRange = 5 ;
+	static private $nSegmentRange = 10 ;
 	
 	static private $arrErrorTypes = array (
 			E_ERROR            => 'Error',
