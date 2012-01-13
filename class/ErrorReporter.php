@@ -41,7 +41,7 @@ OUTPUT
 		
 		$this->outputCalltrace($arrCalltrace,$aOutput) ;
 		
-		$aOutput->write("</div><script>jquery('#error-{$nErrorIdx}-calltrace').hide()</script></div>") ;
+		$aOutput->write("</div><script>document.getElementById('error-{$nErrorIdx}-calltrace').style.display='none' ;</script></div>") ;
 	}
 	
 	public function outputCalltrace($arrCalltrace,IOutputStream $aOutput=null)
@@ -89,9 +89,14 @@ OUTPUT
 	
 	public function readSourceSegment($sFile,$nOffsetLine,$nLines=5)
 	{
-	
 		$arrLines = (array)@file($sFile) ;
-	
+		
+		// 处理 <<<doc 语法（syntaxhighlighter组件不支持该语法）
+		foreach($arrLines as &$sLine)
+		{
+			$sLine = htmlspecialchars($sLine) ;
+		}
+		
 		if( count($arrLines)<$nOffsetLine+$nLines )
 		{
 			$nLines = count($arrLines)-$nOffsetLine + 1 ;

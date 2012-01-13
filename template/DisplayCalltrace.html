@@ -1,5 +1,6 @@
 <lib name='jquery'/>
 <lib name='syntaxhighlighter:php'/>
+<lib name='syntaxhighlighter:xml'/>
     
 	
 	<foreach for="$arrCallTrace" item='arrCall' key='callIdx'>
@@ -28,7 +29,7 @@
 		</div>
 		 
 		<if "!empty($arrCall['file'])">
-		<div style="display:none;margin-left:30px;color:#999999" id='source-{=$sCallTraceId}-{=$callIdx}'>
+		<div style="margin-left:30px;color:#999999" id='source-{=$sCallTraceId}-{=$callIdx}'>
 				{=@$arrCall['file']} (line {=@$arrCall['line']})
 				<pre class="brush: php; first-line: {=$arrCall['segmentOffset']}; highlight: [{=$arrCall['line']}]">
 	// ... ...
@@ -38,4 +39,7 @@
 			</div>
 			</if>			
 		</div>
+		<script>
+		document.getElementById('source-{=$sCallTraceId}-{=$callIdx}').style.display = 'none' ;
+		</script>
 		</foreach>
