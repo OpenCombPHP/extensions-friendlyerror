@@ -4,7 +4,7 @@ namespace org\opencomb\friendlyerror ;
 use org\jecat\framework\io\IOutputStream;
 use org\jecat\framework\lang\Object;
 use org\jecat\framework\ui\xhtml\UIFactory;
-use org\jecat\framework\system\Response;
+use org\jecat\framework\mvc\controller\Response;
 
 class ErrorReporter extends Object
 {
