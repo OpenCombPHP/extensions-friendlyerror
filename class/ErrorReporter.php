@@ -16,7 +16,14 @@ class ErrorReporter extends Object
         	return ;
     	}
     	
-    	self::singleton()->reportError($nErr,$sErrMsg,$sFile,$nLine,debug_backtrace()) ;
+    	$arrCalltrace = debug_backtrace() ;
+    	if( @$arrCalltrace[0]['class']==__CLASS__ and @$arrCalltrace[0]['function'] )
+    	{
+    		unset($arrCalltrace[0]) ;
+    		$arrCalltrace = array_values($arrCalltrace) ;
+    	}
+    	
+    	self::singleton()->reportError($nErr,$sErrMsg,$sFile,$nLine,$arrCalltrace) ;
 	}
 	
 	public function reportError($nErr,$sErrMsg,$sFile,$nLine,$arrCalltrace,IOutputStream $aOutput=null)
