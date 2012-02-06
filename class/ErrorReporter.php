@@ -37,12 +37,25 @@ class ErrorReporter extends Object
 
 		$sErrType = self::$arrErrorTypes[$nErr] ;
 		$nErrorIdx = self::$nErrorIdx ++ ;
+		$sOucOffset = $nLine-30 ;
+		$sOucSource = implode('',self::readSourceSegment($sFile,$sOucOffset,41)) ;
 		
 		$aOutput->write(
 <<<OUTPUT
 <div style="font-size:11px;">
-	{$sErrType} ({$nErr}): {$sErrMsg} <a href="javascript:jquery('#error-{$nErrorIdx}-calltrace').toggle()">调用堆栈</a>
+	{$sErrType} ({$nErr}): {$sErrMsg} 
+	<a href="javascript:jquery('#error-{$nErrorIdx}-calltrace').toggle()">调用堆栈</a>
 	<div id='error-{$nErrorIdx}-calltrace'>
+		<div>
+			[<a href="javascript:jquery('#error-{$nErrorIdx}-ouc').toggle()">发生位置</a>] {$sFile} (Line: {$nLine})
+			<div id="error-{$nErrorIdx}-ouc" style="display:none">
+				<pre class="brush: php; first-line: {$sOucOffset}; highlight: [{$nLine}]">
+// ... ...
+{$sOucSource}
+// ... ...
+				</pre>
+			</div>
+		</div>
 OUTPUT
 		) ;
 		
@@ -94,7 +107,7 @@ OUTPUT
 		return $arrCalltrace ;
 	}
 	
-	public function readSourceSegment($sFile,$nOffsetLine,$nLines=5)
+	static public function readSourceSegment($sFile,$nOffsetLine,$nLines=5)
 	{
 		$arrLines = (array)@file($sFile) ;
 		
