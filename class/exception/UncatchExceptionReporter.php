@@ -53,13 +53,12 @@ class UncatchExceptionReporter extends Controller
 			$aPrinter->write("</div>") ;
 			
 			// 执行堆栈
-			// 
-			
 			$sDivId = "error-{=$nExceptionIdx}-calltrace" ;
 			$aPrinter->write("[<a href=\"javascript:void(0)\" onclick=\"".ErrorReporter::toggleDivJs($sDivId)."\">调用堆栈</a>]") ;
 			$aPrinter->write("<div id='{$sDivId}'>") ;
 			ErrorReporter::singleton()->outputCallStack($aException->getTrace(),$aPrinter) ;
 			$aPrinter->write("</div>") ;
+			
 			
 			$aPrinter->write("<hr /></div>") ;
 			
