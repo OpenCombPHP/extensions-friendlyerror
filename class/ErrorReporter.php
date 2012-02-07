@@ -1,6 +1,8 @@
 <?php
 namespace org\opencomb\friendlyerror ;
 
+use org\jecat\framework\lang\Type;
+
 use org\jecat\framework\io\IOutputStream;
 use org\jecat\framework\lang\Object;
 use org\jecat\framework\ui\xhtml\UIFactory;
@@ -37,48 +39,96 @@ class ErrorReporter extends Object
 
 		$sErrType = self::$arrErrorTypes[$nErr] ;
 		$nErrorIdx = self::$nErrorIdx ++ ;
-		$sOucOffset = $nLine-30 ;
-		$sOucSource = implode('',self::readSourceSegment($sFile,$sOucOffset,41)) ;
+				
+
 		
-		$aOutput->write(
-<<<OUTPUT
+		$aOutput->write( <<<OUTPUT
 <div style="font-size:11px;">
-	{$sErrType} ({$nErr}): {$sErrMsg} 
-	<a href="javascript:jquery('#error-{$nErrorIdx}-calltrace').toggle()">调用堆栈</a>
-	<div id='error-{$nErrorIdx}-calltrace'>
-		<div>
-			[<a href="javascript:jquery('#error-{$nErrorIdx}-ouc').toggle()">发生位置</a>] {$sFile} (Line: {$nLine})
-			<div id="error-{$nErrorIdx}-ouc" style="display:none">
-				<pre class="brush: php; first-line: {$sOucOffset}; highlight: [{$nLine}]">
-// ... ...
-{$sOucSource}
-// ... ...
-				</pre>
-			</div>
-		</div>
+	<div>{$sErrType} ({$nErr}): {$sErrMsg}</div>
+	<div>
+		发生位置：{$sFile} （Line: {$nLine}）
 OUTPUT
 		) ;
 		
-		$this->outputCalltrace($arrCalltrace,$aOutput) ;
+		$this->outputExecutePoint($aOutput,$sFile,$nLine) ;
 		
-		$aOutput->write("</div><script>document.getElementById('error-{$nErrorIdx}-calltrace').style.display='none' ;</script></div>") ;
+		$sDivId = "error-{$nErrorIdx}-calltrace" ;
+		$aOutput->write("[<a href=\"javascript:void(0)\" onclick=\"".self::toggleDivJs($sDivId)."\">调用堆栈</a>]") ;
+		$aOutput->write("<div style='display:none' id='{$sDivId}'>") ;
+	
+		$this->outputCallStack($arrCalltrace,$aOutput) ;
+		
+		$aOutput->write("</div></div>") ;
 	}
 	
-	public function outputCalltrace($arrCalltrace,IOutputStream $aOutput=null)
+	public function outputCallStack($arrCalltrace,IOutputStream $aOutput=null)
 	{
-		if( !class_exists('org\\jecat\\framework\\ui\\UIFactory') or !class_exists('org\\jecat\\framework\\ui\\UI') )
-		{
-			return ;
-		}
-				
-		__HighterActiver::singleton() ;
+		$this->tidyCalltrace($arrCalltrace) ;
 		
-		$aUI = UIFactory::singleton()->create() ;
-		$aUI->display('friendlyerror:DisplayCalltrace.html',array(
-				'arrCallTrace' => $this->tidyCalltrace($arrCalltrace) ,
-				'sCallTraceId' => 'error-'.(self::$nCalltraceIdx++).'-calltrace' ,
-		),$aOutput) ;
+		foreach($arrCalltrace as $nStackIdx=>$arrCall)
+		{
+			$aOutput->write('<div style="margin-left:30px;">') ;
+			
+			$aOutput->write("#{$nStackIdx}") ;
+			
+			$this->outputExecutePoint($aOutput,$arrCall['file'],$arrCall['line'],@$arrCall['function'],@$arrCall['args'],@$arrCall['class'],@$arrCall['type']) ;
+			
+			$aOutput->write('</div>') ;
+		}
 	}
+	
+	public function outputExecutePoint(IOutputStream $aOutput,$sFile,$nLine,$sFunction=null,$arrArgvs=array(),$sClass='',$sCallType='')
+	{
+		$nExecutePointIdx = self::$nExecutePointIdx ++ ;
+		$sDivId = "source-executepoint-{$nExecutePointIdx}" ;
+		
+		// 文件源码链接
+		if($sFile)
+		{
+			$aOutput->write("[<a href=\"javascript:void(0);\" onclick=\"".self::toggleDivJs($sDivId)."\">source</a>]") ;
+		}
+		
+		// 函数名称 和 参数表
+		if($sFunction)
+		{
+			$aOutput->write("{$sClass}{$sCallType}{$sFunction}(") ;
+			foreach (array_values($arrArgvs) as $i=>$argv)
+			{
+				if($i)
+				{
+					$aOutput->write(",") ;
+				}
+				$aOutput->write(is_object($argv)? 'object': Type::reflectType($argv)) ;
+			}
+			$aOutput->write(")") ;
+		}
+		
+		// 源文件内容
+		if($sFile)
+		{
+			$nSourceSegmentOffset = $nLine - 30 ;
+			if($nSourceSegmentOffset<0)
+			{
+				$nSourceSegmentOffset = 0 ;
+			}
+			$nSegmentLength = $nLine-$nSourceSegmentOffset + 1 + 10 ;
+			
+			$aOutput->write("<div style=\"margin-left:30px;color:#999999;display:none\" id='{$sDivId}'>") ;
+			
+			$aOutput->write("{$sFile} (Line: {$nLine})") ;
+			$aOutput->write("<pre class=\"brush: php; first-line: {$nSourceSegmentOffset}; highlight: [{$nLine}]\">") ;
+			$aOutput->write("// ... ...\r\n") ;
+			foreach (self::readSourceSegment($sFile,$nSourceSegmentOffset,41) as $sLineContents)
+			{
+				$aOutput->write($sLineContents) ;
+			}
+			$aOutput->write("// ... ...\r\n") ;
+			$aOutput->write('</pre>') ;
+			
+			$aOutput->write('</div>') ;
+		}
+	}
+	
 	
 	public function tidyCalltrace($arrCalltrace)
 	{
@@ -126,6 +176,13 @@ OUTPUT
 	
 		return $arrLines ;
 	}
+	
+	static public function toggleDivJs($sDivId)
+	{
+		return "document.getElementById('{$sDivId}').style.display = (document.getElementById('{$sDivId}').style.display=='none')? 'block':'none'" ; 
+	}
+
+	static private $nExecutePointIdx = 0 ;
 	
 	static private $nErrorIdx = 0 ;
 	static private $nCalltraceIdx = 0 ;
