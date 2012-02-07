@@ -3,11 +3,8 @@
 	<name>friendlyerror</name>
 	<version>0.1</version>
 	<title>错误友好显示</title>
-	
- 
+
 	<class>org.opencomb.friendlyerror.FriendlyError</class>
 	<package folder="/class" namespace="org.opencomb.friendlyerror" />
-  
-	<template folder="/template" />
 	
 </Extension>
