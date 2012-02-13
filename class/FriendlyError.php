@@ -1,6 +1,10 @@
 <?php 
 namespace org\opencomb\friendlyerror ;
 
+use org\opencomb\advcmpnt\lib\LibManager;
+
+use org\jecat\framework\resrc\HtmlResourcePool;
+
 use org\jecat\framework\lang\Object;
 
 use org\jecat\framework\lang\Type;
@@ -41,6 +45,11 @@ class FriendlyError extends Extension
 
 class __HighterActiver extends Object
 {
+	function __construct()
+	{
+		LibManager::singleton()->loadLibrary('syntaxhighlighter:php') ;
+	}
+	
 	function __destruct()
 	{
 		echo "
