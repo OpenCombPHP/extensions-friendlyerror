@@ -1,6 +1,8 @@
 <?php 
 namespace org\opencomb\friendlyerror ;
 
+use org\opencomb\platform\Platform;
+
 use org\opencomb\advcmpnt\lib\LibManager;
 
 use org\jecat\framework\resrc\HtmlResourcePool;
@@ -24,40 +26,53 @@ class FriendlyError extends Extension
 	}
 	
 	public function active()
-	{
+	{		
 		// 未捕获异常
 		set_exception_handler( array(__CLASS__,'uncatchExceptionHandler') ) ;
 		
 		// 错误
 		set_error_handler( array('org\\opencomb\\friendlyerror\\ErrorReporter','errorHandler'), E_ALL ) ;
+		
+		// 关闭事件
+		register_shutdown_function(array(__CLASS__,'shutdown')) ;
 	}
 	
 	static public function uncatchExceptionHandler(\Exception $aException)
 	{
-    	__HighterActiver::singleton() ;
+    	self::enableSyntaxHighLighter() ;
     	
 		$aExceptionReporter = new UncatchExceptionReporter( array('exception'=>$aException) ) ;
 		$aExceptionReporter->mainRun() ;
 		return ;
 	}
 	
-}
-
-class __HighterActiver extends Object
-{
-	function __construct()
+	static public function enableSyntaxHighLighter()
 	{
-		LibManager::singleton()->loadLibrary('syntaxhighlighter:php') ;
+		self::$bEnableSyntaxHighLighter = true ;
 	}
 	
-	function __destruct()
+	static public function shutdown()
 	{
-		echo "
+		if( self::$bEnableSyntaxHighLighter )
+		{
+			foreach( LibManager::singleton()->libraryFileIterator('js','syntaxhighlighter:php') as $sFile )
+			{
+				echo "<script src='".Platform::singleton()->publicFolders()->find($sFile,'*',true)."'></script>\r\n" ;
+			}
+			foreach( LibManager::singleton()->libraryFileIterator('css','syntaxhighlighter:php') as $sFile )
+			{
+				echo "<link rel='stylesheet' type='text/css' href='".Platform::singleton()->publicFolders()->find($sFile,'*',true)."' />\r\n" ;
+			}
+			
+			echo "
 <script type=\"text/javascript\">
 //隐藏无用的工具栏
 SyntaxHighlighter.defaults['toolbar'] = false;
 //启动语法高亮
 SyntaxHighlighter.all();
 </script>" ;
+		}
 	}
+	
+	static $bEnableSyntaxHighLighter = false ;
 }

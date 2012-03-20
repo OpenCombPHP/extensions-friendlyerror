@@ -34,8 +34,8 @@ class ErrorReporter extends Object
 		{
 			$aOutput = Response::singleton()->printer() ;
 		}
-
-		__HighterActiver::singleton() ;
+		
+		FriendlyError::enableSyntaxHighLighter() ;
 
 		$sErrType = self::$arrErrorTypes[$nErr] ;
 		$nErrorIdx = self::$nErrorIdx ++ ;
