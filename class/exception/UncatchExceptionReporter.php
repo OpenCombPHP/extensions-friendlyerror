@@ -1,6 +1,8 @@
 <?php
 namespace org\opencomb\friendlyerror\exception ;
 
+use org\opencomb\friendlyerror\FriendlyError;
+
 use org\opencomb\friendlyerror\__HighterActiver;
 use org\opencomb\friendlyerror\ErrorReporter;
 use org\jecat\framework\resrc\HtmlResourcePool;
@@ -11,8 +13,7 @@ class UncatchExceptionReporter extends Controller
 {	
 	public function process()
 	{
-		LibManager::singleton()->loadLibrary('syntaxhighlighter:php') ;
-		__HighterActiver::singleton() ;
+		FriendlyError::enableSyntaxHighLighter() ;
 		
 		$aPrinter = $this->response()->printer() ;
 		
