@@ -3,7 +3,7 @@ namespace org\opencomb\friendlyerror ;
 
 use org\opencomb\coresystem\lib\LibManager;
 
-use org\opencomb\platform\Platform;
+use org\opencomb\platform\service\Service;
 use org\jecat\framework\resrc\HtmlResourcePool;
 use org\jecat\framework\lang\Object;
 use org\jecat\framework\lang\Type;
@@ -53,11 +53,11 @@ class FriendlyError extends Extension
 		{
 			foreach( LibManager::singleton()->libraryFileIterator('js','syntaxhighlighter:php') as $sFile )
 			{
-				echo "<script src='".Platform::singleton()->publicFolders()->find($sFile,'*',true)."'></script>\r\n" ;
+				echo "<script src='".Service::singleton()->publicFolders()->find($sFile,'*',true)."'></script>\r\n" ;
 			}
 			foreach( LibManager::singleton()->libraryFileIterator('css','syntaxhighlighter:php') as $sFile )
 			{
-				echo "<link rel='stylesheet' type='text/css' href='".Platform::singleton()->publicFolders()->find($sFile,'*',true)."' />\r\n" ;
+				echo "<link rel='stylesheet' type='text/css' href='".Service::singleton()->publicFolders()->find($sFile,'*',true)."' />\r\n" ;
 			}
 			
 			echo "
