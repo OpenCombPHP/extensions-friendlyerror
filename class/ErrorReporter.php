@@ -71,7 +71,7 @@ OUTPUT
 			
 			$aOutput->write("#{$nStackIdx}") ;
 			
-			$this->outputExecutePoint($aOutput,$arrCall['file'],$arrCall['line'],@$arrCall['function'],@$arrCall['args'],@$arrCall['class'],@$arrCall['type']) ;
+			$this->outputExecutePoint($aOutput,@$arrCall['file'],@$arrCall['line'],@$arrCall['function'],@$arrCall['args'],@$arrCall['class'],@$arrCall['type']) ;
 			
 			$aOutput->write('</div>') ;
 		}
