@@ -4,6 +4,8 @@
 	<name>friendlyerror</name>
 	<version>0.1</version>
 	<title>错误友好显示</title>
+	
+	<description>错误堆栈跟踪,堆栈所处源代码高亮预览</description>
 
 	<class>org.opencomb.friendlyerror.FriendlyError</class>
 	<package folder="/class" namespace="org.opencomb.friendlyerror" />
