@@ -4,9 +4,9 @@ namespace org\opencomb\friendlyerror\exception ;
 use org\opencomb\friendlyerror\FriendlyError;
 
 use org\opencomb\friendlyerror\__HighterActiver;
+
 use org\opencomb\friendlyerror\ErrorReporter;
 use org\jecat\framework\resrc\HtmlResourcePool;
-use org\opencomb\advcmpnt\lib\LibManager;
 use org\jecat\framework\mvc\controller\Controller;
 
 class UncatchExceptionReporter extends Controller
@@ -71,5 +71,3 @@ class UncatchExceptionReporter extends Controller
 		//$this->view->variables()->set('arrCalltrace',$this->params['calltrace']) ;
 	}
 }
-
-?>

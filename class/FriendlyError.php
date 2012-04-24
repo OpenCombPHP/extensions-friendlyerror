@@ -2,14 +2,8 @@
 namespace org\opencomb\friendlyerror ;
 
 use org\opencomb\coresystem\lib\LibManager;
-
-use org\opencomb\platform\service\Service;
-use org\jecat\framework\resrc\HtmlResourcePool;
-use org\jecat\framework\lang\Object;
-use org\jecat\framework\lang\Type;
-use org\jecat\framework\mvc\view\UIFactory;
 use org\opencomb\friendlyerror\exception\UncatchExceptionReporter;
-use org\opencomb\platform\ext\Extension ;
+use org\opencomb\platform\ext\Extension;
 
 class FriendlyError extends Extension 
 {
@@ -72,3 +66,4 @@ SyntaxHighlighter.all();
 	
 	static $bEnableSyntaxHighLighter = false ;
 }
+

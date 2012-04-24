@@ -2,10 +2,8 @@
 namespace org\opencomb\friendlyerror ;
 
 use org\jecat\framework\lang\Type;
-
 use org\jecat\framework\io\IOutputStream;
 use org\jecat\framework\lang\Object;
-use org\jecat\framework\ui\xhtml\UIFactory;
 use org\jecat\framework\mvc\controller\Response;
 
 class ErrorReporter extends Object
@@ -204,5 +202,3 @@ OUTPUT
 			E_RECOVERABLE_ERROR  => 'Recoverable Error'
 	);
 }
-
-?>
