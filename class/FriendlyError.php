@@ -1,6 +1,8 @@
 <?php 
 namespace org\opencomb\friendlyerror ;
 
+use org\opencomb\platform\service\Service;
+
 use org\opencomb\coresystem\lib\LibManager;
 use org\opencomb\friendlyerror\exception\UncatchExceptionReporter;
 use org\opencomb\platform\ext\Extension;
