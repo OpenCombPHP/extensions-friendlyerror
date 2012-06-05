@@ -36,13 +36,14 @@ class ErrorReporter extends Object
 		FriendlyError::enableSyntaxHighLighter() ;
 
 		$sErrType = self::$arrErrorTypes[$nErr] ;
+		$sErrConst = self::$arrErrorConsts[$nErr] ;
 		$nErrorIdx = self::$nErrorIdx ++ ;
 				
 
 		
 		$aOutput->write( <<<OUTPUT
 <div style="font-size:11px;">
-	<div>{$sErrType} ({$nErr}): {$sErrMsg}</div>
+	<div><strong style="margin-right:8px">{$sErrType}({$sErrConst})</strong> {$sErrMsg}</div>
 	<div>
 		发生位置：{$sFile} （Line: {$nLine}）
 OUTPUT
@@ -185,20 +186,37 @@ OUTPUT
 	static private $nErrorIdx = 0 ;
 	static private $nCalltraceIdx = 0 ;
 	static private $nSegmentRange = 10 ;
-	
+
 	static private $arrErrorTypes = array (
-			E_ERROR            => 'Error',
-			E_WARNING        => 'Warning',
-			E_PARSE          => 'Parsing Error',
-			E_NOTICE         => 'Notice',
-			E_CORE_ERROR     => 'Core Error',
-			E_CORE_WARNING   => 'Core Warning',
-			E_COMPILE_ERROR  => 'Compile Error',
-			E_COMPILE_WARNING => 'Compile Warning',
-			E_USER_ERROR     => 'User Error',
-			E_USER_WARNING   => 'User Warning',
-			E_USER_NOTICE    => 'User Notice',
-			E_STRICT         => 'Strict Notice',
-			E_RECOVERABLE_ERROR  => 'Recoverable Error'
+			E_ERROR            => '错误',
+			E_WARNING        => '警告',
+			E_PARSE          => '分析',
+			E_NOTICE         => '提醒',
+			E_CORE_ERROR     => '核心错误',
+			E_CORE_WARNING   => '核心警告',
+			E_COMPILE_ERROR  => '编译错误',
+			E_COMPILE_WARNING => '编译警告',
+			E_USER_ERROR     => '开发级错误',
+			E_USER_WARNING   => '开发级警告',
+			E_USER_NOTICE    => '开发级提醒',
+			E_STRICT         => '不严谨',
+			E_RECOVERABLE_ERROR  => '可恢复错误',
+			E_USER_DEPRECATED  => '反对使用',
+	);
+	static private $arrErrorConsts = array (
+			E_ERROR            => 'E_ERROR',
+			E_WARNING        => 'E_WARNING',
+			E_PARSE          => 'E_PARSE',
+			E_NOTICE         => 'E_NOTICE',
+			E_CORE_ERROR     => 'E_CORE_ERROR',
+			E_CORE_WARNING   => 'E_CORE_WARNING',
+			E_COMPILE_ERROR  => 'E_COMPILE_ERROR',
+			E_COMPILE_WARNING => 'E_COMPILE_WARNING',
+			E_USER_ERROR     => 'E_USER_ERROR',
+			E_USER_WARNING   => 'E_USER_WARNING',
+			E_USER_NOTICE    => 'E_USER_NOTICE',
+			E_STRICT         => 'E_STRICT',
+			E_RECOVERABLE_ERROR  => 'E_RECOVERABLE_ERROR',
+			E_USER_DEPRECATED  => 'E_USER_DEPRECATED',
 	);
 }
