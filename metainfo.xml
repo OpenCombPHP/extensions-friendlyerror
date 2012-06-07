@@ -5,9 +5,13 @@
 	<version>0.1</version>
 	<title>错误友好显示</title>
 	
-	<description>错误堆栈跟踪,堆栈所处源代码高亮预览</description>
+	<description>
+以更友好的方式报告错误和异常：显示调用堆栈，并高亮显示每一层调用上下文的源代码。
+	</description>
 
 	<class>org.opencomb.friendlyerror.FriendlyError</class>
 	<package folder="/class" namespace="org.opencomb.friendlyerror" />
+	
+	<require type="extension" item="advancedcomponent"><![CDATA[ >=0.1 ]]></require>
 	
 </Extension>
