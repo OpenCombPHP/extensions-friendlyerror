@@ -62,6 +62,11 @@ OUTPUT
 	
 	public function outputCallStack($arrCalltrace,IOutputStream $aOutput=null)
 	{
+		if(!$aOutput)
+		{
+			$aOutput = Response::singleton()->device() ;
+		}
+		
 		$this->tidyCalltrace($arrCalltrace) ;
 		
 		foreach($arrCalltrace as $nStackIdx=>$arrCall)
